@@ -12,17 +12,10 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello",
         "onLanguage:razor"
     ],
     "main": "./out/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "extension.sayHello",
-                "title": "Hello World"
-            }
-        ]
+    "contributes": {    
     },
     "scripts": {
         "vscode:prepublish": "compile",

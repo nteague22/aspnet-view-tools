@@ -1,44 +1,39 @@
-import { DefinitionProvider, TextDocument, Position, CancellationToken, Location } from "vscode";
-import * as vscode from 'vscode';
+import { Uri, DefinitionProvider, TextDocument, Position, CancellationToken, Location } from "vscode";
 import * as path from 'path';
 import * as fs from 'fs';
+import PathProvider from './path-provider';
 
 export class RenderDefinitionProvider implements DefinitionProvider {
+
+    pathFinder: PathProvider;
+
+    constructor(){
+        this.pathFinder = null;
+    }
+
     provideDefinition(document: TextDocument, position: Position, token: CancellationToken): Location | Location[] | Thenable<Location | Location[]> {
-        // Get context range for selected text for lookup
-        let pathRange = document.getWordRangeAtPosition(position, /RenderPartial\(\"([A-Za-z\.-_]+)\"\)/);
         
-        // set baseline root
-        const baseline = path.resolve(__dirname, 'Views');
-        
+        let regExtract = /@?Html\.RenderPartial\(\"([A-Za-z\.-_\/]+)\"/;
+
+        // Get context range for selected text for lookup        
+        let pathRange = document.getWordRangeAtPosition(position, regExtract);
+
+        if (!pathRange) {
+            return null;
+        }
         
         // Eventual target
         let target = document.getText(pathRange);
         
-        let chunks = target.split('/').filter((item) => item !== '~' && item !== '..');
+        let test = regExtract.exec(target)[1].replace('~','').replace('..','');
         
-        // Consume local source point, minus baseline for source directory        
-        let container = path.dirname(document.fileName);
-        
-        let result = this.checkPath(container, chunks.join('/'));
+        this.pathFinder = new PathProvider(document.fileName, test);
 
-        if (result) {
-            return result;
-        }
-        
-        // If the source point is not the Shared directory, also place that for fallback
-        let fallback = (container.length && !(/^[Ss]hared$/.test(container[0])) && ['Shared', container]) || [];
-        
-        return this.checkPath(...fallback);
-    }
-
-    checkPath(...items: string[]) {
-        if(fs.existsSync(path.resolve(...items))) {
-            return new vscode.Location(
-                        vscode.Uri.parse(path.resolve(items.join('/'))),
-                        new vscode.Position(0, 0));
-        }
-        return null;
+        if (this.pathFinder.getTestPath()) {
+            return new Location(
+                Uri.parse(this.pathFinder.getTestPath()),
+                    new Position(0, 0));
+        }        
     }
 
     recursePath(containerPath: string[], pathItems: string[]) {
