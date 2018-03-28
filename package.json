@@ -1,6 +1,6 @@
 {
-    "name": "razor-lsp",
-    "displayName": "razor-lsp",
+    "name": "razor-lang",
+    "displayName": "razor-lang",
     "description": "Razor lang server",
     "version": "0.0.1",
     "publisher": "nteague",
