@@ -1,4 +1,4 @@
-import { Uri, DefinitionProvider, TextDocument, Position, CancellationToken, Location } from "vscode";
+import { Uri, DefinitionProvider, TextDocument, Position, CancellationToken, Location, workspace } from "vscode";
 import * as path from 'path';
 import * as fs from 'fs';
 import PathProvider from './path-provider';
@@ -28,19 +28,15 @@ export class RenderDefinitionProvider implements DefinitionProvider {
         let test = regExtract.exec(target)[1].replace('~','').replace('..','');
         
         this.pathFinder = new PathProvider(document.fileName, test);
-
-        if (this.pathFinder.getTestPath()) {
-            return new Location(
-                Uri.parse(this.pathFinder.getTestPath()),
-                    new Position(0, 0));
-        }        
-    }
-
-    recursePath(containerPath: string[], pathItems: string[]) {
-        let current = pathItems.pop();
-        if (current && containerPath.indexOf(current) === -1) {
-            containerPath.push(current);
-            this.recursePath(containerPath, pathItems);
+        
+        let result = this.pathFinder.getTestPath();
+        let workRoot = workspace.getWorkspaceFolder(document.uri);
+        let basePath = workRoot.uri.fsPath;
+        if (result) {
+            let parts = result.replace(basePath, '').split(path.sep);
+            let uri = `${workRoot.uri}${parts.join('/')}`;
+            let fs = Uri.parse(uri);
+            return new Location(fs, new Position(0, 0));
         }
     }
 }
