@@ -1,4 +1,4 @@
-import { Uri, DefinitionProvider, TextDocument, Position, CancellationToken, Location, workspace } from "vscode";
+import { Uri, DefinitionProvider, TextDocument, Position, CancellationToken, Location, workspace, OutputChannel } from "vscode";
 import * as path from 'path';
 import * as fs from 'fs';
 import PathProvider from './path-provider';
@@ -7,8 +7,11 @@ export class RenderDefinitionProvider implements DefinitionProvider {
 
     pathFinder: PathProvider;
 
-    constructor(){
+    readonly log: OutputChannel;
+
+    constructor(logger: OutputChannel){
         this.pathFinder = null;
+        this.log = logger;
     }
 
     provideDefinition(document: TextDocument, position: Position, token: CancellationToken): Location | Location[] | Thenable<Location | Location[]> {

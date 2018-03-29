@@ -1,22 +1,59 @@
 {
-    "name": "razor-lang",
-    "displayName": "razor-lang",
-    "description": "Razor lang server",
-    "version": "0.0.1",
+    "name": "aspnet-view-tools",
+    "displayName": "aspnet-view-tools",
+    "description": "Tools for various providers that support operations about ASP.Net Views, both webforms and razor",
+    "version": "0.0.2",
     "publisher": "nteague",
     "license": "MIT",
     "engines": {
         "vscode": "^1.21.0"
     },
     "categories": [
-        "Other"
+        "Other",
+        "Languages"
     ],
     "activationEvents": [
         "onLanguage:razor",
-        "onLanguage:html"
+        "onLanguage:aspx"
     ],
     "main": "./out/extension",
-    "contributes": {    
+    "contributes": {
+        "configuration":{
+            "title": "aspnetViews",
+            "properties": {
+                "SharedPaths": {
+                    "type":"array",
+                    "items": {
+                        "type":"string",
+                        "minItems": 1
+                    }
+                }
+            }
+        },
+        "languages": [{
+            "id": "aspx",
+            "aliases": ["ASPX Webforms", "aspx-vb"],
+            "extensions": [".master", ".aspx", ".ascx"],
+            "configuration": "./language-configuration.json"
+        }],
+        "themes": [
+            {
+                "label": "aspx-colors",
+                "id": "aspx",
+                "uiTheme": "vs-dark",
+                "path": "./themes/aspx.tmTheme.json"
+            }
+        ],
+        "grammars": [{
+            "language": "aspx",
+            "scopeName": "source.aspx",
+            "path": "./syntaxes/aspx.tmLanguage.json",
+            "embeddedLanguages": {
+                "text.html": "html",
+                "source.css": "css",
+                "source.js": "javascript"
+            }
+        }]
     },
     "scripts": {
         "vscode:prepublish": "compile",

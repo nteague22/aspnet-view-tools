@@ -15,7 +15,7 @@ Requires: ASP.Net
 
 This extension consumes the following settings:
 
-* `razor-lang.enable`: enable/disable this extension
+* `aspnetViews.SharedPaths`: The array of shared view paths, in order of fulfillment, for the project.   Defaults to `['Views/Shared']`
 
 ## Known Issues
 
@@ -28,4 +28,9 @@ Initial release!
 ### 0.0.1
 
 Initial release of razor-lang
+
+### 0.0.2
+
+Added ASPX|ASCX|MASTER pages to the matcher, along with the support for Shared path lookups
+
 
