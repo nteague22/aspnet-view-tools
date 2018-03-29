@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import PathProvider from './path-provider';
 
-export class RenderDefinitionProvider implements DefinitionProvider {
+export default class RazorDefinitionProvider implements DefinitionProvider {
 
     pathFinder: PathProvider;
 
@@ -15,7 +15,7 @@ export class RenderDefinitionProvider implements DefinitionProvider {
     }
 
     provideDefinition(document: TextDocument, position: Position, token: CancellationToken): Location | Location[] | Thenable<Location | Location[]> {
-        
+        this.log.clear();
         let regExtract = /@?Html\.RenderPartial\(\"([A-Za-z\.-_\/]+)\"/;
 
         // Get context range for selected text for lookup        

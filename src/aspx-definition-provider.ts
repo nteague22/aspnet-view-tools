@@ -8,7 +8,7 @@ export default class AspxDefinitionProvider implements DefinitionProvider {
 
     readonly log: OutputChannel;
 
-    readonly status: StatusBarItem;
+    status: StatusBarItem;
 
     constructor(log: OutputChannel) {
         this.SharedPaths = ['Views/Shared'];
@@ -17,8 +17,8 @@ export default class AspxDefinitionProvider implements DefinitionProvider {
     }
 
     provideDefinition(document: TextDocument, position: Position, token: CancellationToken): Location | Location[] | Thenable<Location | Location[]> {
+        this.log.clear();
         this.status.text = "$(zap) Parsing Request";
-        this.log.appendLine('Parsing Request');
         let selectedRange = document.getWordRangeAtPosition(position, renderPartialPattern/*/\"[A-Za-z0-9-_\/]+\"/*/);
         this.log.appendLine(`matched ${selectedRange.start.character} to ${selectedRange.end.character} in ${document.uri.path}`);
         if (selectedRange && !selectedRange.isEmpty) {
@@ -41,41 +41,43 @@ export default class AspxDefinitionProvider implements DefinitionProvider {
             this.log.appendLine(`The requesting document relative path: ${localPath}`);
             let localPathChunks = localPath.split(path.sep);
             localPathChunks.pop();
-            this.log.appendLine(`The local path chunks to start from: ${JSON.stringify(localPathChunks)}`);
             
-            this.log.appendLine(`Searching for ${basePath}/${localPathChunks.join('/')}/${selection[1]}.ascx`);
-            return workspace.findFiles(`${basePath}/${localPathChunks.join('/')}/${selection[1]}.ascx`, null, 1).then(
-                (result) => {
-                    if (result && result[0]) {
-                        this.log.appendLine(result[0].path);
-                        return new Location(result[0], new Position(0, 0));
-                    }
-                    this.log.appendLine('Not found');
-                    return null;
-                }).then((local) => {
-                    if (local) {
-                        return local;
-                    }
-                    this.log.appendLine('Now attempting the shared paths');
-                    let results: Location[] = [];
-                    return workspace.findFiles(`**/${selection[1]}.ascx`, null, 1).then(
-                        (allResults) => {
-                            if (!allResults) {
-                                this.log.appendLine('Found no related shared path items');
-                                return null;
-                            }
-                            this.log.appendLine(`Total project find produced: ${JSON.stringify(allResults)}`);
-                            return allResults.filter((res) => {
-                                let relative = workspace.asRelativePath(res);
-                                let pathExists = this.SharedPaths.filter((p) => res && res.path.indexOf(`${basePath}/${p}`));
-                                this.log.appendLine(`Matched paths to given shared paths: ${JSON.stringify(pathExists)}`);
-                                return pathExists.length;
-                            }).map((match) => {
-                                    return new Location(match, new Position(0, 0));
-                                })[0];
+            let searchPaths: string[] = [];
+            searchPaths.push(`${localPathChunks.join('/')}/${selection[1]}.ascx`);
+            this.log.appendLine(`Searching ${localPathChunks.join('/')}/${selection[1]}.ascx`);
+            
+            for (let p of this.SharedPaths) {
+                this.log.appendLine(`Searching ${p}/${selection[1]}.ascx`);
+                searchPaths.push(`${p}/${selection[1]}.ascx`);
+            }
+            let resultChain: Thenable<Location> = null;
+
+            for (let res of searchPaths) {
+                if (!resultChain) {
+                    resultChain = this.searchPath(res)
+                } else {
+                    resultChain = resultChain.then((r) => {
+                        if (r && r.uri.path) {
+                            return r;
+                        }
+                        return this.searchPath(res)
                     });
-            });
+                }
+            }
+
+            return resultChain;
         }
         return null;
+    }
+
+    searchPath(pathString: string) {
+        return workspace.findFiles(pathString, null, 1).then(
+            (result) => {
+                if (result && result[0]) {
+                    this.log.appendLine(`Found match at ${result[0].path}`);
+                    return new Location(result[0], new Position(0, 0));
+                }
+                return null;
+            });
     }
 }
