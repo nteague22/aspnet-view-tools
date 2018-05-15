@@ -2,7 +2,7 @@
     "name": "aspnet-view-tools",
     "displayName": "aspnet-view-tools",
     "description": "Tools for various providers that support operations about ASP.Net Views, both webforms and razor",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "nteague",
     "license": "MIT",
     "engines": {
@@ -10,7 +10,7 @@
     },
     "categories": [
         "Other",
-        "Languages"
+        "Language Packs"
     ],
     "activationEvents": [
         "onLanguage:razor",
@@ -18,24 +18,33 @@
     ],
     "main": "./out/extension",
     "contributes": {
-        "configuration":{
+        "configuration": {
             "title": "aspnetViews",
             "properties": {
                 "SharedPaths": {
-                    "type":"array",
+                    "type": "array",
                     "items": {
-                        "type":"string",
+                        "type": "string",
                         "minItems": 1
                     }
                 }
             }
         },
-        "languages": [{
-            "id": "aspx",
-            "aliases": ["ASPX Webforms", "aspx-vb"],
-            "extensions": [".master", ".aspx", ".ascx"],
-            "configuration": "./language-configuration.json"
-        }],
+        "languages": [
+            {
+                "id": "aspx",
+                "aliases": [
+                    "ASPX Webforms",
+                    "aspx-vb"
+                ],
+                "extensions": [
+                    ".master",
+                    ".aspx",
+                    ".ascx"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
         "themes": [
             {
                 "label": "aspx-colors",
@@ -44,16 +53,18 @@
                 "path": "./themes/aspx.tmTheme.json"
             }
         ],
-        "grammars": [{
-            "language": "aspx",
-            "scopeName": "source.aspx",
-            "path": "./syntaxes/aspx.tmLanguage.json",
-            "embeddedLanguages": {
-                "text.html": "html",
-                "source.css": "css",
-                "source.js": "javascript"
+        "grammars": [
+            {
+                "language": "aspx",
+                "scopeName": "source.aspx",
+                "path": "./syntaxes/aspx.tmLanguage.json",
+                "embeddedLanguages": {
+                    "text.html": "html",
+                    "source.css": "css",
+                    "source.js": "javascript"
+                }
             }
-        }]
+        ]
     },
     "scripts": {
         "vscode:prepublish": "compile",
