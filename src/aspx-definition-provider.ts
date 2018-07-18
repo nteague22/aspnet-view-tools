@@ -20,8 +20,8 @@ export default class AspxDefinitionProvider implements DefinitionProvider {
         this.log.clear();
         this.status.text = "$(zap) Parsing Request";
         let selectedRange = document.getWordRangeAtPosition(position, renderPartialPattern/*/\"[A-Za-z0-9-_\/]+\"/*/);
-        this.log.appendLine(`matched ${selectedRange.start.character} to ${selectedRange.end.character} in ${document.uri.path}`);
         if (selectedRange && !selectedRange.isEmpty) {
+            this.log.appendLine(`matched ${selectedRange.start.character} to ${selectedRange.end.character} in ${document.uri.path}`);
             let selection = renderPartialPattern.exec(document.getText(selectedRange));
             this.log.appendLine(`Yielded path of ${selection[1]}`);
             if (!selection) {

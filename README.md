@@ -37,3 +37,9 @@ Added ASPX|ASCX|MASTER pages to the matcher, along with the support for Shared p
 ### 0.0.3
 
 Incorporated a previous tmTheme that extended html for mild syntax highlighting
+
+### 0.1.0
+
+* Fixed inline string bugs in aspx/ascx/master pages
+* added CSS embedded styling also
+* Set styling to more consistent scoping for future theming

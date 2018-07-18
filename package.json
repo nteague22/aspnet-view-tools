@@ -2,7 +2,7 @@
     "name": "aspnet-view-tools",
     "displayName": "aspnet-view-tools",
     "description": "Tools for various providers that support operations about ASP.Net Views, both webforms and razor",
-    "version": "0.0.3",
+    "version": "0.1.0",
     "publisher": "nteague",
     "license": "MIT",
     "engines": {
@@ -45,14 +45,6 @@
                 "configuration": "./language-configuration.json"
             }
         ],
-        "themes": [
-            {
-                "label": "aspx-colors",
-                "id": "aspx",
-                "uiTheme": "vs-dark",
-                "path": "./themes/aspx.tmTheme.json"
-            }
-        ],
         "grammars": [
             {
                 "language": "aspx",
@@ -60,6 +52,7 @@
                 "path": "./syntaxes/aspx.tmLanguage.json",
                 "embeddedLanguages": {
                     "text.html": "html",
+                    "source.asp.vb.net": "vb",
                     "source.css": "css",
                     "source.js": "javascript"
                 }
