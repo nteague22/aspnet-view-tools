@@ -17,17 +17,51 @@
         },
         {
             "include": "#aspx-html-tags"
-        },
-        {
-            "include": "#aspx-html-close-tag"
         }
     ],
     "repository": {
         "aspx-embedded-style-tag": {
-            "patterns": [
-                {
-                    "begin": "(<)(style)(>)",
-                    "beginCaptures": {
+            "patterns": [{
+                "begin": "(<)(style)(>)",
+                "beginCaptures": {
+                    "1": {
+                        "name": "punctuation.definition.tag.begin.html.aspx"
+                    },
+                    "2": {
+                        "name": "entity.name.tag.html.aspx"
+                    },
+                    "3": {
+                        "name": "punctuation.definition.tag.end.html.aspx"
+                    }
+                },
+                "end": "(</)(style)(>)",
+                "endCaptures": {
+                    "1": {
+                        "name": "punctuation.definition.tag.begin.html.aspx"
+                    },
+                    "2": {
+                        "name": "entity.name.tag.html.aspx"
+                    },
+                    "3": {
+                        "name": "punctuation.definition.tag.end.html.aspx"
+                    }
+                },
+                "patterns": [{
+                        "include": "#aspx-comment"
+                    },
+                    {
+                        "include": "#aspx-section"
+                    },
+                    {
+                        "include": "source.css"
+                    }
+                ]
+            }]
+        },
+        "aspx-html-tags": {
+            "patterns": [{
+                    "match": "(</)([^>]+)(>)",
+                    "captures": {
                         "1": {
                             "name": "punctuation.definition.tag.begin.html.aspx"
                         },
@@ -37,9 +71,14 @@
                         "3": {
                             "name": "punctuation.definition.tag.end.html.aspx"
                         }
-                    },
-                    "end": "(</)(style)(>)",
-                    "endCaptures": {
+                    }
+                },
+                {
+                    "begin": "(<)!?([A-Za-z:\\-_\\.]+)",
+                    "end": "(/>|\\s*>)",
+                    "name": "meta.html.inline.tag.spread.aspx",
+                    "contentName": "meta.html.inline.tag.spread.aspx",
+                    "captures": {
                         "1": {
                             "name": "punctuation.definition.tag.begin.html.aspx"
                         },
@@ -51,183 +90,64 @@
                         }
                     },
                     "patterns": [{
-                            "include": "#aspx-comment"
-                        },
-                        {
                             "include": "#aspx-section"
                         },
                         {
-                            "include": "source.css"
+                            "include": "#aspx-html-attribute-assignment"
                         }
                     ]
                 }
             ]
         },
-        "aspx-html-close-tag": {
-            "patterns": [{
-                "match": "(</)([^>]+)(>)",
-                "captures": {
-                    "1": {
-                        "name": "punctuation.definition.tag.begin.html.aspx"
+        "aspx-html-attribute-assignment": {
+            "patterns": [
+                {
+                    "begin": "([\"'])",
+                    "end": "(\\1)",
+                    "captures": {
+                        "1": {
+                            "name": "string.quoted.double.html.aspx"
+                        },
+                        "2": {
+                            "name": "string.quoterd.double.html.aspx"
+                        }
                     },
-                    "2": {
-                        "name": "entity.name.tag.html.aspx"
-                    },
-                    "3": {
-                        "name": "punctuation.definition.tag.end.html.aspx"
+                    "patterns": [{
+                            "name": "meta.embedded.section.aspx",
+                            "include": "#aspx-section"
+                        },
+                        {
+                            "name": "string.interpolated.html.aspx"
+                        }
+                    ]
+                },
+                {
+                    "match": "\\s+([A-Za-z\\-_\\.:]+)(?=\\s|>)",
+                    "name": "meta.entity.other.attribute-name.isolated.aspx",
+                    "captures": {
+                        "1": {
+                            "name": "entity.other.attribute-name.html.aspx"
+                        }
+                    }
+                },
+                {
+                    "match": "\\s+([A-Za-z\\-_\\.:]+\\s*)(?==)",
+                    "name": "meta.entity.other.attribute-name.assignment.aspx",
+                    "captures": {
+                        "1": {
+                            "name": "entity.other.attribute-name.html.aspx"
+                        }
+                    }
+                },
+                {
+                    "match": "\\s*(=)\\s*",
+                    "captures": {
+                        "1": {
+                            "name": "keyword.operator.html.aspx"
+                        }
                     }
                 }
-            }]
-        },
-        "aspx-html-tags": {
-            "patterns": [{
-                "begin": "(<)([!A-Za-z:\\-_]+)",
-                "end": "(\/?>)",
-                "captures": {
-                    "1": {
-                        "name": "punctuation.definition.tag.begin.html.aspx"
-                    },
-                    "2": {
-                        "name": "entity.name.tag.html.aspx"
-                    },
-                    "3": {
-                        "name": "punctuation.definition.tag.end.html.aspx"
-                    }
-                },
-                "patterns": [{
-                        "include": "#aspx-empty-attr"
-                    },
-                    {
-                        "include": "#aspx-attribute-assignment"
-                    }
-                ]
-
-            }]
-        },
-        "aspx-empty-attr": {
-            "patterns": [{
-                "match": "(?=\\b[a-zA-Z\\-_]+\\b)([a-zA-Z\\-_]+)",
-                "name": "entity.other.attribute-name.html.aspx"
-            }]
-        },
-        "aspx-html-tags-empty": {
-            "patterns": [{
-                "match": "(?=<[^%>\\s]+>)(<)([^<>]+)(\/?>)",
-                "name": "entity.name.tag.empty.aspx",
-                "captures": {
-                    "1": {
-                        "name": "punctuation.definition.tag.begin.html.aspx"
-                    },
-                    "2": {
-                        "name": "entity.name.tag.html.aspx"
-                    },
-                    "3": {
-                        "name": "punctuation.definition.tag.end.html.aspx"
-                    }
-                }
-            }]
-        },
-        "aspx-attribute-assignment": {
-            "patterns": [{
-                "match": "(?==\"[^\"]+\"|='[^']+')(=)(\"[^\"]+\"|'[^']+')",
-                "captures": {
-                    "1": {
-                        "name": "keyword.operator.aspx"
-                    },
-                    "2": {
-                        "patterns": [{
-                                "include": "#aspx-string-double"
-                            },
-                            {
-                                "include": "#aspx-string-single"
-                            }
-                        ]
-                    }
-                }
-            }]
-        },
-        "aspx-string-double": {
-            "patterns": [{
-                "begin": "\"",
-                "beginCaptures": {
-                    "0": {
-                        "name": "punctuation.definition.string.begin.asp.aspx"
-                    }
-                },
-                "end": "\"",
-                "endCaptures": {
-                    "0": {
-                        "name": "punctuation.definition.string.end.asp.aspx"
-                    }
-                },
-                "patterns": [{
-                        "match": "(?!<%[^%>]+%>)([^\"]+)",
-                        "captures": {
-                            "1": {
-                                "name": "string.quoted.double.html.aspx"
-                            }
-                        }
-                    },
-                    {
-                        "match": "(?=[^\"]*<%[^%>]+%>[^\"]*)([^\"]*)(<%[^%>]+%>)([^\"]*)",
-                        "captures": {
-                            "1": {
-                                "name": "string.quoted.double.html.aspx"
-                            },
-                            "2": {
-                                "patterns": [{
-                                    "include": "#aspx-section"
-                                }]
-                            },
-                            "3": {
-                                "name": "string.quoted.double.html.aspx"
-                            }
-                        }
-                    }
-                ]
-
-            }]
-        },
-        "aspx-string-single": {
-            "patterns": [{
-                "begin": "'",
-                "beginCaptures": {
-                    "0": {
-                        "name": "punctuation.definition.string.begin.asp.aspx"
-                    }
-                },
-                "end": "'",
-                "endCaptures": {
-                    "0": {
-                        "name": "punctuation.definition.string.end.asp.aspx"
-                    }
-                },
-                "patterns": [{
-                        "match": "(?!<%[^%>]+%>)([^']+)",
-                        "captures": {
-                            "1": {
-                                "name": "string.quoted.single.html.aspx"
-                            }
-                        }
-                    },
-                    {
-                        "match": "(?=[^']*<%[^%>]+%>[^']*)([^']*)(<%[^%>]+%>)([^']*)",
-                        "captures": {
-                            "1": {
-                                "name": "string.quoted.single.html.aspx"
-                            },
-                            "2": {
-                                "patterns": [{
-                                    "include": "#aspx-section"
-                                }]
-                            },
-                            "3": {
-                                "name": "string.quoted.single.html.aspx"
-                            }
-                        }
-                    }
-                ]
-            }]
+            ]
         },
         "extended-operators": {
             "patterns": [{
@@ -237,26 +157,28 @@
         },
         "aspx-type-def": {
             "patterns": [{
-                    "match": "\\b(Of)\\b",
-                    "name": "keyword.control.asp.aspx"
+                "begin": "(\\()(Of)\\s+",
+                "end": "\\)",
+                "captures": {
+                    "1": {
+                        "name": "punctuation.section.round-brackets.begin.asp.aspx"
+                    },
+                    "2": {
+                        "name": "keyword.control.asp.aspx"
+                    },
+                    "3": {
+                        "name": "punctuation.section.round-brackets.end.asp.aspx"
+                    }
                 },
-                {
-                    "match": "(?=\\bOf\\b\\s+)([A-Za-z_]+)",
+                "patterns": [{
+                    "match": "(?=\\G,)?\\s*([A-Za-z_]+)",
                     "captures": {
                         "1": {
                             "name": "entity.name.type.aspx"
                         }
                     }
-                },
-                {
-                    "match": "(?=\\G,\\s)([A-Za-z_]+)",
-                    "captures": {
-                        "1": {
-                            "name": "entity.name.type.aspx"
-                        }
-                    }
-                }
-            ]
+                }]
+            }]
         },
         "aspx-code": {
             "patterns": [{
@@ -295,15 +217,13 @@
         },
         "aspx-section": {
             "patterns": [{
-                "begin": "<%[@:=]?",
-                "beginCaptures": {
-                    "0": {
+                "begin": "((?=<%[@:=]?)<%[@:=]?)",
+                "end": "(%>)",
+                "captures": {
+                    "1": {
                         "name": "punctuation.definition.tag.begin.aspx"
-                    }
-                },
-                "end": "%>",
-                "endCaptures": {
-                    "0": {
+                    },
+                    "2": {
                         "name": "punctuation.definition.tag.end.aspx"
                     }
                 },
