@@ -100,8 +100,7 @@
             ]
         },
         "aspx-html-attribute-assignment": {
-            "patterns": [
-                {
+            "patterns": [{
                     "begin": "([\"'])",
                     "end": "(\\1)",
                     "captures": {
@@ -151,7 +150,7 @@
         },
         "extended-operators": {
             "patterns": [{
-                "match": "\\b(AndAlso|OrElse|IsNot|Is|As)\\b",
+                "match": "\\b(AndAlso|OrElse|IsNot|Is|As|Exit)\\b",
                 "name": "keyword.control.aspx"
             }]
         },
@@ -197,6 +196,9 @@
                     "patterns": [{
                         "include": "#aspx-code"
                     }]
+                },
+                {
+                    "include": "#aspx-interpolated-string"
                 },
                 {
                     "include": "#aspx-type-def"
@@ -267,6 +269,44 @@
                     }
                 }
 
+            }]
+        },
+        "aspx-interpolated-string": {
+            "patterns": [{
+                "begin": "\\$\"",
+                "beginCaptures": {
+                    "0": {
+                        "name": "string.interpolated.aspx"
+                    }
+                },
+                "end": "\"",
+                "endCaptures": {
+                    "0": {
+                        "name": "string.interpolated.aspx"
+                    }
+                },
+                "patterns": [{
+                    "begin": "{(?!{)",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.string.interpolated.begin.aspx"
+                        }
+                    },
+                    "end": "}(?!})",
+                    "endCaptures": {
+                        "0": {
+                            "name": "punctuation.string.interpolated.end.aspx"
+                        }
+                    },
+                    "patterns": [{
+                            "include": "#aspx-code"
+                        },
+                        {
+                            "name": "string.interpolated.aspx"
+                        }
+                    ]
+
+                }]
             }]
         }
     },
