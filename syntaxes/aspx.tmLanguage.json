@@ -5,9 +5,19 @@
         "*.ascx",
         "*.master"
     ],
-    "patterns": [{
+    "patterns": [
+        {
             "name": "comment.block.aspx",
             "include": "#aspx-comment"
+        },
+        {
+
+            "begin": "<!--",
+            "end": "-->",
+            "name": "comment.block.html.aspx",
+            "patterns": [{
+                "include": "text.html.basic"
+            }]
         },
         {
             "include": "#aspx-section"
