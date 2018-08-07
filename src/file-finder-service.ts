@@ -1,7 +1,5 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import * as fs from 'fs';
-import { ConfigurationItem } from 'vscode-languageclient/lib/main';
 
 export const AspxRegex = /\.(as[pc]x|master)$/;
 
@@ -25,7 +23,6 @@ export class FileFinderService {
      * Gets the test path resolved from the given items with the matched extension of the source file
      */
     getTestPath(sourceFile: vscode.TextDocument, targetPath: string): Thenable<vscode.Uri[]> {
-        let basePath = vscode.workspace.getWorkspaceFolder(sourceFile.uri);
         let extTarget = path.extname(sourceFile.fileName);
         
         if (!AspxRegex.test(extTarget) && !RazorRegex.test(extTarget)) {

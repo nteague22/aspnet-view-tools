@@ -23,6 +23,7 @@
         ["\"", "\""],
         ["'", "'"],
         ["<%", "%>"],
+        ["<%:", "%>"]
     ],
     // symbols that that can be used to surround a selection
     "surroundingPairs": [
@@ -33,9 +34,6 @@
         ["'", "'"]
     ],
     "wordPattern": "[A-Za-z-_\\.]+",
-    "folding": {
-        "offSide": true
-    },
     "indentationRules": {
         "increaseIndentPattern": "<%[\\s]*([Ii]f|[Ee]lse|[Ee]lse [Ii]f|[Ff]or [Ee]ach)[\\S\\s]*%>",
         "decreaseIndentPattern": "<%[\\s]*([Ee]lse|[Ee]nd [Ii]f|[Ee]nd [Ss]elect|[Nn]ext)[\\S\\s]*%>",

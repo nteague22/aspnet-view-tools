@@ -2,7 +2,7 @@
     "name": "aspnet-view-tools",
     "displayName": "aspnet-view-tools",
     "description": "Tools for various providers that support operations about ASP.Net Views, both webforms and razor",
-    "version": "0.1.0",
+    "version": "0.1.5",
     "publisher": "nteague",
     "license": "MIT",
     "engines": {
@@ -19,9 +19,10 @@
     "main": "./out/extension",
     "contributes": {
         "configuration": {
-            "title": "aspnetViews",
+            "type": "object",
+            "title": "ASPNet View Tools",
             "properties": {
-                "SharedPaths": {
+                "aspx.sharedPaths": {
                     "type": "array",
                     "items": {
                         "type": "string",
@@ -69,8 +70,9 @@
     "devDependencies": {
         "@types/mocha": "^2.2.42",
         "@types/node": "^7.0.67",
-        "typescript": "^2.7.2",
-        "vscode": "^1.1.14",
+        "plist": "^3.0.1",
+        "typescript": "^3.0.1",
+        "vscode": "^1.1.18",
         "vscode-languageclient": "^4.0.0",
         "vscode-languageserver": "^4.0.0"
     }

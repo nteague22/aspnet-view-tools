@@ -5,25 +5,22 @@
         "*.ascx",
         "*.master"
     ],
-    "patterns": [
-        {
+    "patterns": [{
             "name": "comment.block.aspx",
             "include": "#aspx-comment"
-        },
-        {
-
-            "begin": "<!--",
-            "end": "-->",
-            "name": "comment.block.html.aspx",
-            "patterns": [{
-                "include": "text.html.basic"
-            }]
         },
         {
             "include": "#aspx-section"
         },
         {
             "include": "#aspx-embedded-style-tag"
+        },
+        {
+            "begin": "<!--",
+            "end": "-->",
+            "patterns": [{
+                "include": "text.html.basic"
+            }]
         },
         {
             "include": "#aspx-html-tags"
@@ -116,17 +113,12 @@
                     "captures": {
                         "1": {
                             "name": "string.quoted.double.html.aspx"
-                        },
-                        "2": {
-                            "name": "string.quoterd.double.html.aspx"
                         }
                     },
+                    "contentName": "string.interpolated.html.aspx",
                     "patterns": [{
                             "name": "meta.embedded.section.aspx",
                             "include": "#aspx-section"
-                        },
-                        {
-                            "name": "string.interpolated.html.aspx"
                         }
                     ]
                 },
@@ -320,5 +312,7 @@
             }]
         }
     },
-    "scopeName": "source.aspx"
+    "scopeName": "source.aspx",
+    "foldingStartMarker": "^[\\s]*<%",
+    "foldingStopMarker": "%>[\\s]*$"
 }
