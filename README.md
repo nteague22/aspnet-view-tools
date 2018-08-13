@@ -43,3 +43,9 @@ Incorporated a previous tmTheme that extended html for mild syntax highlighting
 * Fixed inline string bugs in aspx/ascx/master pages
 * added CSS embedded styling also
 * Set styling to more consistent scoping for future theming
+
+### 0.1.5
+
+* Made ASPX path provider honor case insensitive for windows use cases
+* Set automatic RESS-style secondary extension parsing, to follow priority in local, shared, general local, general shared
+* Began initial work on code lens provider for ASPX provider files
