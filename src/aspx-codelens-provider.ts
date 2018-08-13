@@ -15,7 +15,7 @@ export default class AspxCodelensProvider implements CodeLensProvider {
         return this.captureViewReferences(document).map(r => new CodeLens(r));
     }
 
-    resolveCodeLens?(codeLens: CodeLens, token: CancellationToken): ProviderResult<CodeLens> {        
+    resolveCodeLens?(codeLens: CodeLens, token: CancellationToken): ProviderResult<CodeLens> {
         throw new Error("Method not implemented.");
     }
 
