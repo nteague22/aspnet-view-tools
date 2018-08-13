@@ -23,6 +23,7 @@
             "title": "ASPNet View Tools",
             "properties": {
                 "aspx.sharedPaths": {
+                    "description": "The array of directories that should be searched for shared partials.  Will respect order given.",
                     "type": "array",
                     "items": {
                         "type": "string",
