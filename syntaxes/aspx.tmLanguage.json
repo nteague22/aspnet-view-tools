@@ -18,9 +18,8 @@
         {
             "begin": "<!--",
             "end": "-->",
-            "patterns": [{
-                "include": "text.html.basic"
-            }]
+            "name": "comment.block.html.aspx",
+            "contentName": "comment.block.html.aspx"
         },
         {
             "include": "#aspx-html-tags"
