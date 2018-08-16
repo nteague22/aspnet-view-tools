@@ -8,7 +8,7 @@ export class MetadataDefinitionLink {
 
     name: string;
 
-    constructor(itemPath: Uri, name: string, position?: Position, range?: Range, lineNumber?: number){
+    constructor(itemPath: Uri, name: string, position?: Position, range?: Range, lineNumber?: number) {
         let source = itemPath;
         this.filePosition = new Location(source, (position || range || new Position(lineNumber, 0)));
         this.name = name;
@@ -35,21 +35,26 @@ export default class AspxDefinitionHtmlhelpers implements vscode.DefinitionProvi
 
     sources: Uri[];
 
-    methodPattern = /(?:Html\.)([A-Za-z]+)(?:\()/i;
+    methodPattern = /(?:Html\.)([A-Za-z]+)/i;
 
     provideDefinition(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): vscode.ProviderResult<vscode.Definition> {
         let methodTarget = document.getWordRangeAtPosition(position, this.methodPattern);
-        this.output.appendLine(`The method extraction target: ${inspect(methodTarget)}`);
-        this.output.appendLine(`The targeted text captured: ${document.getText(methodTarget)}`);
-        let extracted = this.methodPattern.exec(document.getText(methodTarget));
-        this.output.appendLine(`Targeting the extension method ${extracted[1]}`);
-        return this.definitions.filter(d => d.name.indexOf(extracted && extracted.length > 0 && extracted[1] || '') > -1).map(d0 => d0.getLocation());
+        if (methodTarget) {
+            this.output.appendLine(`The targeted text captured: ${document.getText(methodTarget)}`);
+            if (this.methodPattern.test(document.getText(methodTarget))) {
+                let extracted = this.methodPattern.exec(document.getText(methodTarget))[1];
+                if (/(?!renderpartial)/i.test(extracted)) {
+                    this.output.appendLine(`Targeting the extension method ${extracted}`);
+                    return this.definitions.filter(d => d.name === extracted).map(d0 => d0.getLocation());
+                }
+            }
+        }
+        return null;
     }
 
     constructor(log: OutputChannel, config: WorkspaceConfiguration, defs: MetadataDefinitionLink[]) {
         this.output = log;
         this.configuration = config;
         this.definitions = defs;
-        this.output.append(inspect(defs));
     }
 }
