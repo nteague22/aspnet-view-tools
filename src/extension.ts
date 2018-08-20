@@ -41,7 +41,6 @@ export function activate(context: vscode.ExtensionContext) {
                             if (!linePos.isEmptyOrWhitespace) {
                                 let metaMatch = metaPattern.exec(linePos.text);
                                 if (metaMatch && metaMatch.length > 0) {
-                                    log.appendLine(`The matched item name: ${metaMatch[1]} from the text: ${linePos.text}`);
                                     let itemName = metaMatch[1];
                                     let newPos = new Position(linePos.lineNumber, metaMatch.index);
                                     definitions.push(new MetadataDefinitionLink(doc.uri, itemName, newPos, doc.getWordRangeAtPosition(newPos)));
