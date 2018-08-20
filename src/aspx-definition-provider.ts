@@ -40,12 +40,13 @@ export default class AspxDefinitionProvider implements DefinitionProvider {
                 return null;
             }
             let sourceFolder = workspace.getWorkspaceFolder(document.uri).uri.path;
-            let relativePath = document.uri.path.replace(/(.*)(?:\.aspx|ascx|master)$/, "$1").replace(`${sourceFolder}/`, "").toLowerCase() || '';
+            let relativePath = document.uri.path.replace(/(.*)(?:\.aspx|\.ascx|\.master)$/, "$1").replace(`${sourceFolder}/`, "").toLowerCase() || '';
 
             let pathTry: Location = null;
 
             // If it is a specific RESS view, try specific suffixes in local, shared order ahead of the general ones
             if (path.extname(relativePath) && path.extname(relativePath) !== '.') {
+                this.log.appendLine(`Relative path for view is ${relativePath} ||  Will try extension ${path.extname(relativePath)}`);
                 pathTry = this.tryFetchPath(`${path.dirname(relativePath)}/${selection}${path.extname(relativePath)}.ascx`);
                 if (pathTry) {
                     return pathTry;

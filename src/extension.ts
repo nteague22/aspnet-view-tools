@@ -48,7 +48,6 @@ export function activate(context: vscode.ExtensionContext) {
                                 }
                             }
                         }
-                        log.appendLine(inspect(definitions, true));
                     });
                 });
                 log.appendLine("Metadata Links Consumed");
