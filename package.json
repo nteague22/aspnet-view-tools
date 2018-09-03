@@ -5,6 +5,10 @@
     "version": "0.1.5",
     "publisher": "nteague",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nteague22/aspnet-view-tools"
+    },
     "engines": {
         "vscode": "^1.21.0"
     },
