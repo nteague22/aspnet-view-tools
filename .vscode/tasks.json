@@ -27,6 +27,21 @@
                 "reveal": "always"
             },
             "group": "build"
+        },
+        {
+            "label": "Build Package",
+            "type": "shell",
+            "command": "vsce",
+            "args": [
+                "package"
+            ],
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "panel": "new",
+                "showReuseMessage": true
+            },
+            "problemMatcher": "$eslint-stylish"
         }
     ]
 }
