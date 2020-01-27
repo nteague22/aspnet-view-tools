@@ -30,7 +30,7 @@ export default class AspxDefinitionProvider implements DefinitionProvider {
     }
 
     provideDefinition(document: TextDocument, position: Position, token: CancellationToken): Location | Location[] | Thenable<Location | Location[]> {
-        let renderPartialPattern = /(?:RenderPartial\(\")([\w\/~]+)(\")/i;
+        let renderPartialPattern = /(?:RenderPartial\(\")([^"]+)(\")/i;
         let selectedRange = document.getWordRangeAtPosition(position, renderPartialPattern);
         if (selectedRange && !selectedRange.isEmpty) {
             let selection = (renderPartialPattern.exec(document.getText(selectedRange))[1]).toLowerCase();
@@ -74,8 +74,5 @@ export default class AspxDefinitionProvider implements DefinitionProvider {
             }
         }
         return null;
-
-        this.log.appendLine("workspace returned no results");
-        this.log.show();
     }
 }

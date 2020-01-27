@@ -80,7 +80,7 @@
                     }
                 },
                 {
-                    "begin": "(<)!?([A-Za-z:\\-_\\.]+)",
+                    "begin": "(<)!?([A-Za-z0-9:\\-_\\.]+)",
                     "end": "(/>|\\s*>)",
                     "name": "meta.html.inline.tag.spread.aspx",
                     "contentName": "meta.html.inline.tag.spread.aspx",
